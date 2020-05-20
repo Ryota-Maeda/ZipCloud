@@ -20,7 +20,8 @@
 $(function () {
   // 検索ボタンがクリックされたら
   $('#search-btn').click(() => {
-    $.fakeLoader();
+
+    $.LoadingOverlay("show");
 
     // 入力された郵便番号を取得
     let val = $('#search-word').val()
@@ -34,15 +35,16 @@ $(function () {
         zipcode: val
       }
     }).done((data) => {
-      let prefectures = data.results[0].address1;
-      let city = data.results[0].address2;
-      let address = data.results[0].address3;
+      $('#prefectures').text(data.results[0].address1);
+      $('#city').text(data.results[0].address2);
+      $('#address').text(data.results[0].address3);
 
-      $('#prefectures').text(prefectures);
-      $('#city').text(city);
-      $('#address').text(address);
     }).fail((error) => {
       console.error(error)
+
+    }).always(() => {
+      $.LoadingOverlay("hide");
     })
+
   })
 })
